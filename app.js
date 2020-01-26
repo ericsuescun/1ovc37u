@@ -54,6 +54,16 @@ app.get("/notes/:id/edit", logger, async (req, res, next) => {
   res.render("edit", { notes: notes, currentNote: note });
 });
 
+app.get("/analytics", logger, async (req, res) => {
+  const logs = await pageView.aggregate(
+      [
+        { $group: { _id: "$path", visits: { $sum: 1 }}},
+        { $sort: { visits: -1 }}
+      ]
+    );
+  res.render("analytics", { logs: logs } );
+})
+
 app.patch("/notes/:id", async (req, res) => {
   const id = req.params.id;
   const note = await Note.findById(id);

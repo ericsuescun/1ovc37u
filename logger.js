@@ -2,7 +2,7 @@ const pageView = require('./models/pageview');
 
 const logger = (req, res, next) => {
 	const browser = req.get('User-Agent');
-	const url = req.protocol + '://' + req.get('host') + req.originalUrl;
+	const url = req.url;
 	const date = new Date();
 	pageView.create({
 		path: url,
